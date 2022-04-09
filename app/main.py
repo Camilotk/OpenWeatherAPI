@@ -18,4 +18,15 @@ def get_temperature(city_name):
     url_temperature_api = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}'
     data = requests.get(url_temperature_api).json()
 
-    return data
+    return_data = {
+        'min': data['main']['temp_min'],
+        'max': data['main']['temp_max'],
+        'avg': float(format((data['main']['temp_min'] + data['main']['temp_max'])/2, '.2f')),
+        'city': {
+            'name': data['name'],
+            'country': data['sys']['country']
+        }
+    }
+
+    return return_data
+
