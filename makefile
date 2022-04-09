@@ -1,3 +1,6 @@
+flask:
+	@flask run
+
 build:
 	@docker build -t openweatherapi_flask .
 

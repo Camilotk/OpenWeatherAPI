@@ -5,6 +5,6 @@ services:
     ports:
       - 4500:4500
     volumes:
-      - ./:/usr/src/app:ro
+      - ./:/usr/src/app
     env_file:
       - ./.env

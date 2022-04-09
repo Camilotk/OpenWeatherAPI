@@ -7,8 +7,7 @@ class Cache:
     def __init__(self):
         self.conn = sqlite3.connect('cache.sqlite')
         self.cursor = self.conn.cursor()
-        if not path.exists('cache.sqlite'):
-            self.cursor.execute('CREATE TABLE IF NOT EXISTS Temperatures (city TEXT, country TEXT, max REAL, min REAL, created DATETIME)')
+        self.cursor.execute('CREATE TABLE IF NOT EXISTS Temperatures (city TEXT, country TEXT, max REAL, min REAL, created DATETIME)')
     
     def get_cached_temperatures(self, city, max_entries):
         self.cursor.execute(f'SELECT * FROM Temperatures WHERE city LIKE \'{city}\' ORDER BY created DESC LIMIT {max_entries} COLLATE NOCASE')
