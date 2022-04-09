@@ -15,6 +15,13 @@ API_KEY = os.getenv('API_KEY')
 @app.get('/temperature/<city_name>')
 def get_temperature(city_name):
     cache = Cache()
+
+    parameter = request.args.get('max')
+    if parameter:
+        cache_list = cache.get_cached_temperatures(city_name, parameter)
+        print(cache_list)
+        return {'data': cache_list }
+
     last_cache = cache.get_cached_temperatures(city_name, 1)
     print(last_cache)
     if last_cache:
@@ -40,10 +47,5 @@ def get_temperature(city_name):
 
     if not last_cache:
         cache.create_cache_entry(data['name'], data['country'], data['max'], data['min'])
-        print('aqui')
-
-    parameter = request.args.get('max', default = 1, type = int)
-    if parameter:
-        return cache.get_cached_temperatures(data['name'], parameter)[0]
 
     return data
