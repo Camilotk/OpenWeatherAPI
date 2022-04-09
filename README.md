@@ -33,6 +33,17 @@ $ make run
 
 Access http://127.0.0.1:4500/temperature/\<city_name\>
 
+An example of returned JSON from this endpoint is:
+```JSON
+{
+  "avg": 298.78,
+  "country": "BR",
+  "max": 299.93,
+  "min": 297.64,
+  "name": "Guará"
+}
+```
+
 ## Endpoints
 
 The base URL is one of:
@@ -43,6 +54,6 @@ The API has the following endpoints:
 | endpoint                        | http method | JSON data                                                                                                                                                                              |
 |---------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | /temperature/\<**city_name**\>      | GET         | Get the current temperature for the specified city_name , either from cache or from the Open Weather API, if not already cached (and still valid).  Data mappings are described below. |
-| /temperature/\<**city_name**\>?max=< **max_number** > | GET         | Get the cached temperatures for up to the latest max_number queried cities (through the above endpoint)   
+| /temperature/\<**city_name**\>?max=\<**max_number**\> | GET         | Get the cached temperatures for up to the latest max_number queried cities (through the above endpoint)   
 
 No authentication is required on any endpoint.
