@@ -28,7 +28,19 @@ $ git clone git@github.com:Camilotk/OpenWeatherAPI.git
 $ cd OpenWeatherAPI/
 $ cp .env.example .env
 $ make build
-$ make flask
+$ make run
 ```
 
 Access http://127.0.0.1:4500/temperature/\<city_name\>
+
+## Endpoints
+
+The base URL is one of:
+- http://127.0.0.1:4500/ if you are running from docker with command `make run`
+- http://127.0.0.1:5000/ if you are running from local enviroment with command `make flask`
+
+The API has the following endpoints:
+| endpoint                        | http method | JSON data                                                                                                                                                                              |
+|---------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /temperature/< **city_name** >      | GET         | Get the current temperature for the specified city_name , either from cache or from the Open Weather API, if not already cached (and still valid).  Data mappings are described below. |
+| /temperature/< **city_name** > ?max=< **max_number** > | GET         | Get the cached temperatures for up to the latest max_number queried cities (through the above endpoint)   
