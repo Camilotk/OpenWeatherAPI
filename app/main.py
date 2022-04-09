@@ -11,23 +11,45 @@ app = Flask(__name__)
 
 API_KEY = os.getenv('API_KEY')
 
+def calc_average_temperature(max, min):
+    return float(format((max, min)/2, '.2f'))
+
+def cache_is_valid(date):
+    TIME_LIMIT = os.getenv('MAX_TIME_LIMIT_SECONDS')
+    return (date - datetime.now()).seconds < TIME_LIMIT
+
+def return_if_cache_is_valid(cache):
+    (name, country, max_temp, min_temp, str_date) = cache
+    cache_date = datetime.strptime(str_date[:19], '%Y-%m-%d %H:%M:%S')
+    data = dict()
+    if cache_is_valid(cache_date):
+        data = { 
+            'name': name, 
+            'country': country, 
+            'max': max_temp, 
+            'min': min_temp, 
+            'avg':  calc_average_temperature(max_temp, min_temp) 
+        }
+    return data
+
 @app.get('/temperature/<city_name>')
 def get_temperature(city_name):
     cache = Cache()
 
+    # return the n (n = parameter) entries in cache
     parameter = request.args.get('max')
     if parameter:
         cache_list = cache.get_cached_temperatures(city_name, parameter)
         return {'data': cache_list }
 
+    # check if cache exists and returns it before check API
     last_cache = cache.get_cached_temperatures(city_name, 1)
     if last_cache:
-        (name, country, max_t, min_t, str_date) = last_cache[0]
-        
-        date = datetime.strptime(str_date[:19], '%Y-%m-%d %H:%M:%S')
-        if (date - datetime.now()).seconds < 900:
-            return { 'name': name, 'country': country, 'max': max_t, 'min': min_t, 'avg': float(format((max_t+min_t)/2, '.2f')) }
-
+        cache = return_if_cache_is_valid(last_cache)
+        if cache:
+            return cache
+    
+    # makes the API request
     url_geocoding_api = f'http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=5&appid={API_KEY}'
     place = requests.get(url_geocoding_api).json()
     lat, lon = (place[0]['lat'], place[0]['lon'])
@@ -35,16 +57,16 @@ def get_temperature(city_name):
     url_temperature_api = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}'
     data = requests.get(url_temperature_api).json()
 
-    avg = float(format((data['main']['temp_min'] + data['main']['temp_max'])/2, '.2f'))
-
+    # muounts the return
     data = {
         'name': data['name'], 
         'country': data['sys']['country'],  
         'min': data['main']['temp_min'], 
         'max': data['main']['temp_max'], 
-        'avg': avg
+        'avg': calc_average_temperature(data['main']['temp_max'], data['main']['temp_min'])
     }
 
+    # cache 
     cache.create_cache_entry(data['name'], data['country'], data['max'], data['min'])
 
     return data
