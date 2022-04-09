@@ -21,7 +21,11 @@ I created a makefile to make easier run the docker commands. This script contain
 | make stop        | docker-compose down                | stop running the docker image                |
 | bash             | docker run -it bash                | access console in the running image          |
 
+
+You can start the project on docker running the following commands in your terminal:
 ```
+$ git clone git@github.com:Camilotk/OpenWeatherAPI.git
+$ cd OpenWeatherAPI/
 $ cp .env.example .env
 $ make build
 $ make flask
