@@ -12,7 +12,8 @@ app = Flask(__name__)
 API_KEY = os.getenv('API_KEY')
 
 def calc_average_temperature(max, min):
-    return float(format((max, min)/2, '.2f'))
+    print({'min': type(min), 'max': type(max)})
+    return float(format((max + min)/2, '.2f'))
 
 def cache_is_valid(date):
     TIME_LIMIT = os.getenv('MAX_TIME_LIMIT_SECONDS')
@@ -57,13 +58,15 @@ def get_temperature(city_name):
     url_temperature_api = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}'
     data = requests.get(url_temperature_api).json()
 
+    avg_temp = calc_average_temperature(data['main']['temp_max'], data['main']['temp_min'])
+  
     # muounts the return
     data = {
         'name': data['name'], 
         'country': data['sys']['country'],  
         'min': data['main']['temp_min'], 
         'max': data['main']['temp_max'], 
-        'avg': calc_average_temperature(data['main']['temp_max'], data['main']['temp_min'])
+        'avg': avg_temp
     }
 
     # cache 
