@@ -13,5 +13,8 @@ update:
 stop:
 	@docker-compose down
 
+test:
+	pytest -v -s
+
 bash:
 	@docker run -it openweatherapi_api bash
