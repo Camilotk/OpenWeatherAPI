@@ -70,8 +70,6 @@ requests-unixsocket==0.2.0
 scipy==1.7.3
 SecretStorage==2.3.1
 semver==2.0.1
-sip==4.19.21
-six==1.14.0
 soupsieve==2.3.1
 sqlparse==0.4.2
 systemd-python==234
