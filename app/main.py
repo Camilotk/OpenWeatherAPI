@@ -12,7 +12,6 @@ app = Flask(__name__)
 API_KEY = os.getenv('API_KEY')
 
 def calc_average_temperature(max, min):
-    print({'min': type(min), 'max': type(max)})
     return float(format((max + min)/2, '.2f'))
 
 def cache_is_valid(date):
@@ -70,7 +69,6 @@ def get_temperature(city_name):
     }
 
     # cache 
-    print(cache)
     cache.create_cache_entry(data['name'], data['country'], data['max'], data['min'])
 
     return data
