@@ -2,6 +2,17 @@
 
 This is a Flask app that consumes OpenWeatherAPI and creates cache in SQLite3.
 
+### Check the API
+
+This API is deployed on Heroku https://openapiweatherdev.herokuapp.com/ (note that root '/' is empty), you can use curl to access it:
+
+```
+$ curl https://openapiweatherdev.herokuapp.com/temperature/farroupilha -H "Accept: application/json"
+```
+It returns:
+```JSON
+{"avg":289.5,"country":"BR","max":290.63,"min":288.38,"name":"Farroupilha"}
+```
 
 ## Requirements
 - Docker
