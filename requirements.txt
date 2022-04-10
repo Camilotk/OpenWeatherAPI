@@ -69,7 +69,6 @@ pyparsing==2.4.6
 PyQt5==5.14.1
 pyRFC3339==1.1
 pyrsistent==0.15.5
-pyserial==3.4
 python-apt===2.1.2pop0-1587756471-20.04-cd2988e
 python-dateutil==2.7.3
 python-debian===0.1.36ubuntu1
