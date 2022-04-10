@@ -4,8 +4,8 @@ from os import remove, path
 from datetime import datetime
 
 class Cache:
-    def __init__(self):
-        self.conn = sqlite3.connect('cache.sqlite')
+    def __init__(self, path_name='cache.sqlite'):
+        self.conn = sqlite3.connect(path_name)
         self.cursor = self.conn.cursor()
         self.cursor.execute('CREATE TABLE IF NOT EXISTS Temperatures (city TEXT, country TEXT, max REAL, min REAL, created DATETIME)')
     
