@@ -16,11 +16,11 @@ def calc_average_temperature(max, min):
     return float(format((max + min)/2, '.2f'))
 
 def cache_is_valid(date):
-    TIME_LIMIT = os.getenv('MAX_TIME_LIMIT_SECONDS')
+    TIME_LIMIT = int(os.getenv('MAX_TIME_LIMIT_SECONDS'))
     return (date - datetime.now()).seconds < TIME_LIMIT
 
 def return_if_cache_is_valid(cache):
-    (name, country, max_temp, min_temp, str_date) = cache
+    (name, country, max_temp, min_temp, str_date) = cache[0]
     cache_date = datetime.strptime(str_date[:19], '%Y-%m-%d %H:%M:%S')
     data = dict()
     if cache_is_valid(cache_date):
@@ -46,9 +46,9 @@ def get_temperature(city_name):
     # check if cache exists and returns it before check API
     last_cache = cache.get_cached_temperatures(city_name, 1)
     if last_cache:
-        cache = return_if_cache_is_valid(last_cache)
-        if cache:
-            return cache
+        cache_data = return_if_cache_is_valid(last_cache)
+        if cache_data:
+            return cache_data
     
     # makes the API request
     url_geocoding_api = f'http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=5&appid={API_KEY}'
@@ -70,6 +70,7 @@ def get_temperature(city_name):
     }
 
     # cache 
+    print(cache)
     cache.create_cache_entry(data['name'], data['country'], data['max'], data['min'])
 
     return data
