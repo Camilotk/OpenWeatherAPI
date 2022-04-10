@@ -16,7 +16,8 @@ def calc_average_temperature(max, min):
 
 def cache_is_valid(date):
     TIME_LIMIT = int(os.getenv('MAX_TIME_LIMIT_SECONDS'))
-    return (date - datetime.now()).seconds < TIME_LIMIT
+    time_in_seconds = (date - datetime.now()).total_seconds()
+    return time_in_seconds < TIME_LIMIT
 
 def return_if_cache_is_valid(cache):
     (name, country, max_temp, min_temp, str_date) = cache[0]
